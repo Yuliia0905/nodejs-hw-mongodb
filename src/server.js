@@ -6,7 +6,7 @@ import { getAllContacts, getContactById } from './services/contacts.js';
 
 const PORT = Number(env('PORT', '3000'));
 
- export const setupServer = () => {
+export const setupServer = () => {
   const app = express();
   app.use(cors());
   app.use(express.json());
@@ -30,7 +30,8 @@ const PORT = Number(env('PORT', '3000'));
     const { contactId } = req.params;
     const contact = await getContactById(contactId);
     if (!contact) {
-      return res.status(404).json({ message: 'Contact not found' });
+      res.status(404).json({ message: 'Contact not found' });
+      return;
     }
     res.status(200).json({
       message: `Successfully found contact with id ${contactId}!`,
@@ -58,4 +59,3 @@ const PORT = Number(env('PORT', '3000'));
     console.log(`Server is running on port ${PORT}`);
   });
 };
-
