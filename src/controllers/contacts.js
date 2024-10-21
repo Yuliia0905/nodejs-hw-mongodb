@@ -7,8 +7,22 @@ import {
   updateContact,
 } from '../services/contacts.js';
 
-export const getContactsController = async (req, res) => {
-  const contacts = await getAllContacts();
+import { parsePaginationParams } from '../utils/parsePaginationParams.js';
+import { parseSortParams } from '../utils/parseSortParams.js';
+import { parseFilterParams } from '../utils/parseFilterParams.js';
+
+export const getContactsController = async (req, res, next) => {
+  const { page, perPage } = parsePaginationParams(req.query);
+  const { sortBy, sortOrder } = parseSortParams(req.query);
+  const filter = parseFilterParams(req.query);
+
+  const contacts = await getAllContacts({
+    page,
+    perPage,
+    sortBy,
+    sortOrder,
+    filter,
+  });
   res.status(200).json({
     status: 200,
     message: 'Successfully found contacts!',
@@ -16,7 +30,7 @@ export const getContactsController = async (req, res) => {
   });
 };
 
-export const getContactByIDConrtoller = async (req, res) => {
+export const getContactByIDController = async (req, res) => {
   const { contactId } = req.params;
   const contact = await getContactById(contactId);
   if (!contact) {
@@ -60,6 +74,8 @@ export const deleteContactController = async (req, res) => {
     throw createHttpError(404, 'Contact not found');
   }
   res.status(204).send();
+  // res.status(204).end();
+  // res.sendStatus(204)
 };
 
 export const patchContactController = async (req, res) => {

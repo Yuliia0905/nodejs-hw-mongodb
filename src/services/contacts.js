@@ -1,34 +1,61 @@
+import { SORT_ORDER } from '../constans/sortOrder.js';
 import { ContactsCollection } from '../db/models/contacts.js';
+import { calculatePaginationData } from '../utils/calculatePaginationData.js';
 
-export const getAllContacts = async () => {
-  return await ContactsCollection.find();
+export const getAllContacts = async ({
+  page,
+  perPage,
+  sortBy = '_id',
+  sortOrder = SORT_ORDER.ASC,
+  filter = {},
+}) => {
+  const skip = page > 0 ? (page - 1) * perPage : 0;
+
+  const contactsQuery = ContactsCollection.find();
+
+  if (filter.contactType !== undefined) {
+    contactsQuery.where('contactType').equals(filter.contactType);
+  }
+
+  if (filter.isFavourite !== undefined) {
+    contactsQuery.where('isFavourite').equals(filter.isFavourite);
+  }
+
+  const [totalItems, contacts] = await Promise.all([
+    ContactsCollection.countDocuments(contactsQuery),
+    contactsQuery
+      .sort({ [sortBy]: sortOrder })
+      .skip(skip)
+      .limit(perPage)
+      .exec(),
+  ]);
+
+  const paginationData = calculatePaginationData(totalItems, perPage, page);
+
+  return {
+    data: contacts,
+    ...paginationData,
+  };
 };
 
 export const getContactById = async (contactId) => {
   return await ContactsCollection.findById(contactId);
 };
 
-export const createContact = async (payload) => {
-  return await ContactsCollection.create(payload);
+export const createContact = async (contactData) => {
+  return await ContactsCollection.create(contactData);
 };
 
 export const deleteContact = async (contactId) => {
   return await ContactsCollection.findOneAndDelete({ _id: contactId });
 };
 
-export const updateContact = async (contactId, payload) => {
+export const updateContact = async (contactId, newData) => {
   return await ContactsCollection.findOneAndUpdate(
     {
       _id: contactId,
     },
-    payload,
+    newData,
     { new: true },
   );
-
-  // if (!rawResult || !rawResult.value) return null;
-
-  // return {
-  //   contact: rawResult.value,
-  //   isNew: Boolean(rawResult?.lastErrorObject?.upserted),
-  // };
 };
