@@ -22,6 +22,7 @@ export const getContactsController = async (req, res, next) => {
     sortBy,
     sortOrder,
     filter,
+    userId: req.user.id,
   });
   res.status(200).json({
     status: 200,
@@ -58,6 +59,7 @@ export const createContactController = async (req, res) => {
     email,
     isFavourite,
     contactType,
+    userId: req.user.id,
   });
 
   res.status(201).json({
