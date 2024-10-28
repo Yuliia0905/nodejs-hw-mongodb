@@ -1,4 +1,4 @@
-import { THIRTY_DAYS } from '../constans/index.js';
+// import { THIRTY_DAYS } from '../constans/index.js';
 import {
   loginUser,
   logoutUser,
@@ -52,13 +52,13 @@ export const logoutUserController = async (req, res) => {
 const setupSession = (res, session) => {
   res.cookie('refreshToken', session.refreshToken, {
     httpOnly: true,
-    expires: new Date(Date.now() + THIRTY_DAYS),
-    // expires: session.refreshTokenValidUntil,
+    // expires: new Date(Date.now() + THIRTY_DAYS),
+    expires: session.refreshTokenValidUntil,
   });
   res.cookie('sessionId', session._id, {
     httpOnly: true,
-    expires: new Date(Date.now() + THIRTY_DAYS),
-    // expires: session.refreshTokenValidUntil,
+    // expires: new Date(Date.now() + THIRTY_DAYS),
+    expires: session.refreshTokenValidUntil,
   });
 };
 

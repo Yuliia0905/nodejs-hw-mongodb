@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 import createHttpError from 'http-errors';
 import { randomBytes } from 'crypto';
 import { SessionsCollection } from '../db/models/session.js';
-import { UsersCollection } from '../db/models/user.js';
+import { UsersCollection } from '../db/models/users.js';
 import { FIFTEEN_MINUTES, THIRTY_DAYS } from '../constans/index.js';
 
 export const registerUser = async (payload) => {

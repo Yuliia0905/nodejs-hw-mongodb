@@ -11,9 +11,7 @@ const PORT = Number(env('PORT', '3000'));
 
 export const setupServer = () => {
   const app = express();
-  app.use(
-    cors(),
-  );
+  app.use(cors());
   app.use(cookieParser());
   // app.use(
   //   express.json({
@@ -34,7 +32,7 @@ export const setupServer = () => {
     next();
   });
 
-  app.use('/', routers);
+  app.use(routers);
 
   app.use('*', notFoundHandler);
 
