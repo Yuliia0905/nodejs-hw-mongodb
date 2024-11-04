@@ -6,6 +6,7 @@ import routers from './routers/index.js';
 import { errorHadler } from './middlewares/errorHandler.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import cookieParser from 'cookie-parser';
+import { UPLOAD_DIR } from './constants/index.js';
 
 const PORT = Number(env('PORT', '3000'));
 
@@ -31,6 +32,8 @@ export const setupServer = () => {
     console.log(`Time: ${new Date().toLocaleString()}`);
     next();
   });
+
+  app.use('/uploads', express.static(UPLOAD_DIR));
 
   app.use(routers);
 

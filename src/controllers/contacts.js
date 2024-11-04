@@ -10,6 +10,7 @@ import {
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
 import { parseFilterParams } from '../utils/parseFilterParams.js';
+import { handlePhotoUpload } from '../utils/handleUploadPhoto.js';
 
 export const getContactsController = async (req, res, next) => {
   const { page, perPage } = parsePaginationParams(req.query);
@@ -49,12 +50,15 @@ export const getContactByIDController = async (req, res) => {
 
 export const createContactController = async (req, res) => {
   const { name, phoneNumber, email, isFavourite, contactType } = req.body;
-  if (!name || !phoneNumber || !contactType) {
+  if (!name || !phoneNumber) {
     throw createHttpError(
       400,
-      'Missing required fields: name, phoneNumber, and contactType are required.',
+      'Missing required fields: name, phoneNumber are required.',
     );
   }
+
+  const photoUrl = await handlePhotoUpload(req.file);
+
   const contact = await createContact({
     name,
     phoneNumber,
@@ -62,6 +66,7 @@ export const createContactController = async (req, res) => {
     isFavourite,
     contactType,
     userId: req.user._id,
+    photo: photoUrl,
   });
 
   res.status(201).json({
@@ -85,7 +90,13 @@ export const deleteContactController = async (req, res) => {
 
 export const patchContactController = async (req, res) => {
   const { contactId } = req.params;
-  const result = await updateContact(contactId, req.body);
+
+  const photoUrl = await handlePhotoUpload(req.file);
+
+  const result = await updateContact(contactId, {
+    ...req.body,
+    photo: photoUrl,
+  });
   if (!result) {
     throw createHttpError(404, 'contact not found');
   }
