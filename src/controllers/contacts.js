@@ -90,13 +90,16 @@ export const deleteContactController = async (req, res) => {
 
 export const patchContactController = async (req, res) => {
   const { contactId } = req.params;
+  const userId = req.user._id.toString();
 
   const photoUrl = await handlePhotoUpload(req.file);
 
-  const result = await updateContact(contactId, {
+  const newData = {
     ...req.body,
     photo: photoUrl,
-  });
+  };
+
+  const result = await updateContact(contactId, userId, newData);
 
   if (!result) {
     throw createHttpError(404, 'contact not found');
