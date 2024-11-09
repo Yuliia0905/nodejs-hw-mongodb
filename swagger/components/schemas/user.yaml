@@ -22,13 +22,3 @@ properties:
     description: "User's password (hashed)"
     type: string
     example: '$2b$10$7a4d5cf56e2d33d6e2e9ad26384b2b6f4e1f8ac3cd10421d7f00a'
-  createdAt:
-    description: 'Timestamp when the user was created'
-    type: string
-    format: date-time
-    example: '2024-04-05T12:34:56.789Z'
-  updatedAt:
-    description: 'Timestamp when the user was last updated'
-    type: string
-    format: date-time
-    example: '2024-04-10T15:22:11.123Z'

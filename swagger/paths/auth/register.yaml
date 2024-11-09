@@ -42,6 +42,8 @@ responses:
               example: 'Successfully registered a user!'
             data:
               $ref: ../../components/schemas/user.yaml
+  '400':
+    $ref: ../../components/responses/400.yaml
   '409':
     description: Email already in use
     content:
