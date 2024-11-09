@@ -12,8 +12,8 @@ tags:
   - name: Auth
     description: Auth operations.
 servers:
-  # - url: https://contacts-app-ri3h.onrender.com
-  - url: http://127.0.0.1:3000
+  - url: https://contacts-app-ri3h.onrender.com
+  # - url: http://127.0.0.1:3000
 paths:
   /contacts:
     get:
