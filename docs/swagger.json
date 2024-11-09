@@ -11,7 +11,7 @@
   },
   "servers": [
     {
-      "url": "http://127.0.0.1:3000"
+      "url": "https://contacts-app-ri3h.onrender.com"
     }
   ],
   "tags": [
@@ -527,6 +527,96 @@
           }
         }
       }
+    },
+    "/auth/register": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Register a new user",
+        "operationId": "registerUser",
+        "description": "Registers a new user by providing a name, email, and password.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "email",
+                  "password"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "User's full name"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "User's email address"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "User's password",
+                    "format": "password"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User successfully registered",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 201
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully registered a user!"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/user"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Email already in use",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 409
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Email already in use"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -593,6 +683,50 @@
             "type": "string",
             "example": "https://res.cloudinary.com/uqwgdu/image/upload/image.png",
             "default": null
+          }
+        }
+      },
+      "user": {
+        "type": "object",
+        "required": [
+          "_id",
+          "name",
+          "email",
+          "password"
+        ],
+        "properties": {
+          "_id": {
+            "description": "User's unique identifier",
+            "type": "string",
+            "example": "65e4decdd286b30065d54af9"
+          },
+          "name": {
+            "description": "User's full name",
+            "type": "string",
+            "example": "John Doe"
+          },
+          "email": {
+            "description": "User's email address",
+            "type": "string",
+            "format": "email",
+            "example": "johndoe@example.com"
+          },
+          "password": {
+            "description": "User's password (hashed)",
+            "type": "string",
+            "example": "$2b$10$7a4d5cf56e2d33d6e2e9ad26384b2b6f4e1f8ac3cd10421d7f00a"
+          },
+          "createdAt": {
+            "description": "Timestamp when the user was created",
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-04-05T12:34:56.789Z"
+          },
+          "updatedAt": {
+            "description": "Timestamp when the user was last updated",
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-04-10T15:22:11.123Z"
           }
         }
       }

@@ -12,7 +12,7 @@ tags:
   - name: Auth
     description: Auth operations.
 servers:
-  - url: http://127.0.0.1:3000
+  - url: https://contacts-app-ri3h.onrender.com
   # - url: #посилання на задеплоєний сайт
 paths:
   /contacts:
@@ -27,6 +27,10 @@ paths:
       $ref: ../swagger/paths/contacts/{id}/patch.yaml
     delete:
       $ref: ../swagger/paths/contacts/{id}/delete.yaml
+
+  /auth/register:
+    post:
+      $ref: ../swagger/paths/auth/register.yaml
 components:
   securitySchemes:
     bearerAuth:
