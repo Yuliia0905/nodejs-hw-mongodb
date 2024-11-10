@@ -45,7 +45,7 @@ paths:
       $ref: ../swagger/paths/auth/request-reset.yaml
   /auth/reset-password:
     post:
-      $ref: ../swagger/paths/auth/logout.yaml
+      $ref: ../swagger/paths/auth/reset-password.yaml
 
 components:
   securitySchemes:
